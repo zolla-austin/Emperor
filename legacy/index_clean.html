@@ -1,0 +1,2575 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EMPEROR — Lagos</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --obsidian: #0a0a0c;
+        --obsidian-2: #111019;
+        --obsidian-3: #1a1826;
+        --gold: #d4af37;
+        --gold-l: #e8cc6a;
+        --ivory: #f8f4ec;
+        --ivory-2: #ede8dc;
+        --muted: rgba(248, 244, 236, 0.45);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--obsidian);
+        color: var(--ivory);
+        font-family: "Jost", sans-serif;
+        font-weight: 300;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      .cur {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+      }
+      .cur-d {
+        width: 8px;
+        height: 8px;
+        background: var(--gold);
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+      }
+      .cur-r {
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(212, 175, 55, 0.55);
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        transition: all 0.1s ease-out;
+      }
+      #gc {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.14;
+        pointer-events: none;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        padding: 26px 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: background 0.4s;
+      }
+      .nl {
+        font-family: "Playfair Display", serif;
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        color: var(--gold);
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+      .nm {
+        display: flex;
+        gap: 44px;
+        list-style: none;
+      }
+      .nm a {
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ivory-2);
+        text-decoration: none;
+        transition: color 0.3s;
+        position: relative;
+      }
+      .nm a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: var(--gold);
+        transform: scaleX(0);
+        transition: transform 0.3s;
+      }
+      .nm a:hover {
+        color: var(--gold);
+      }
+      .nm a:hover::after {
+        transform: scaleX(1);
+      }
+      .nc {
+        font-size: 10px;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--obsidian);
+        background: var(--gold);
+        padding: 11px 26px;
+        border: none;
+        font-family: "Jost", sans-serif;
+        font-weight: 500;
+        cursor: none;
+        transition:
+          background 0.3s,
+          transform 0.2s;
+      }
+      .nc:hover {
+        background: var(--gold-l);
+        transform: translateY(-1px);
+      }
+
+      .hero {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        z-index: 1;
+      }
+      .hbg {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+          radial-gradient(
+            ellipse 65% 85% at 72% 52%,
+            rgba(212, 175, 55, 0.07) 0%,
+            transparent 58%
+          ),
+          radial-gradient(
+            ellipse 45% 65% at 22% 28%,
+            rgba(212, 175, 55, 0.04) 0%,
+            transparent 52%
+          ),
+          linear-gradient(
+            135deg,
+            #0a0a0c 0%,
+            #0f0e18 42%,
+            #13111e 68%,
+            #0a0a0c 100%
+          );
+      }
+      .slines {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .sl {
+        position: absolute;
+        top: -20%;
+        width: 1px;
+        height: 140%;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(212, 175, 55, 0.09),
+          transparent
+        );
+        transform-origin: top center;
+        animation: sway 9s ease-in-out infinite alternate;
+      }
+      .sl:nth-child(1) {
+        left: 12%;
+        animation-delay: 0s;
+        opacity: 0.55;
+      }
+      .sl:nth-child(2) {
+        left: 28%;
+        animation-delay: -2.5s;
+        opacity: 0.38;
+      }
+      .sl:nth-child(3) {
+        left: 48%;
+        animation-delay: -4.5s;
+        opacity: 0.48;
+      }
+      .sl:nth-child(4) {
+        left: 66%;
+        animation-delay: -1.5s;
+        opacity: 0.32;
+      }
+      .sl:nth-child(5) {
+        left: 82%;
+        animation-delay: -3.5s;
+        opacity: 0.42;
+      }
+      @keyframes sway {
+        0% {
+          transform: skewX(-4deg) scaleX(1);
+        }
+        100% {
+          transform: skewX(4deg) scaleX(1.7);
+        }
+      }
+      .hc {
+        text-align: center;
+        z-index: 2;
+        position: relative;
+        animation: fadeUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(65px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hey {
+        font-size: 10px;
+        letter-spacing: 0.65em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 28px;
+        animation: fadeUp 1.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .hh {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(62px, 10vw, 128px);
+        font-weight: 900;
+        line-height: 0.88;
+        color: var(--ivory);
+        letter-spacing: -0.02em;
+        animation: fadeUp 1.5s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .hh em {
+        font-style: italic;
+        color: var(--gold);
+        display: block;
+      }
+      .hs {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 18px;
+        font-style: italic;
+        color: var(--muted);
+        margin-top: 26px;
+        letter-spacing: 0.08em;
+        animation: fadeUp 1.5s 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .hdv {
+        width: 80px;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        margin: 32px auto;
+      }
+      .hbtn {
+        display: inline-block;
+        font-size: 10px;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: var(--ivory);
+        border: 1px solid var(--gold);
+        padding: 16px 50px;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        animation: fadeUp 1.5s 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        transition: color 0.4s;
+      }
+      .hbtn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gold);
+        transform: translateX(-101%);
+        transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .hbtn:hover {
+        color: var(--obsidian);
+      }
+      .hbtn:hover::before {
+        transform: translateX(0);
+      }
+      .hbtn span {
+        position: relative;
+        z-index: 1;
+      }
+      .sci {
+        position: absolute;
+        bottom: 46px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .sci span {
+        font-size: 9px;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .scl {
+        width: 1px;
+        height: 48px;
+        background: linear-gradient(to bottom, var(--gold), transparent);
+        animation: sp 2.2s ease-in-out infinite;
+      }
+      @keyframes sp {
+        0%,
+        100% {
+          opacity: 0.28;
+          transform: scaleY(0.75);
+        }
+        50% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+      }
+
+      .mq {
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        border-top: 1px solid rgba(212, 175, 55, 0.14);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.14);
+        padding: 15px 0;
+        background: rgba(212, 175, 55, 0.018);
+      }
+      .mqt {
+        display: flex;
+        gap: 60px;
+        animation: mrun 22s linear infinite;
+        white-space: nowrap;
+      }
+      @keyframes mrun {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      .mqi {
+        font-size: 10px;
+        letter-spacing: 0.5em;
+        text-transform: uppercase;
+        color: var(--gold);
+        display: flex;
+        align-items: center;
+        gap: 60px;
+      }
+      .mqd {
+        width: 4px;
+        height: 4px;
+        background: var(--gold);
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .sec {
+        position: relative;
+        z-index: 2;
+        padding: 120px 60px;
+      }
+      .sh {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 64px;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.11);
+        padding-bottom: 30px;
+      }
+      .slb {
+        font-size: 9px;
+        letter-spacing: 0.62em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 11px;
+      }
+      .st {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(34px, 5vw, 62px);
+        font-weight: 700;
+        color: var(--ivory);
+        line-height: 1.05;
+      }
+      .st em {
+        font-style: italic;
+        color: var(--gold);
+      }
+      .sd {
+        max-width: 360px;
+        text-align: right;
+        font-family: "Cormorant Garamond", serif;
+        font-size: 16px;
+        font-style: italic;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      .va {
+        display: inline-block;
+        font-size: 10px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--gold);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.28);
+        padding-bottom: 4px;
+        transition: border-color 0.3s;
+      }
+      .va:hover {
+        border-color: var(--gold);
+      }
+
+      /* UNIFIED PRODUCT GRID & CARDS */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .product-card {
+        position: relative;
+        background: var(--obsidian-3);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        overflow: hidden;
+        transition:
+          transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.55s,
+          border-color 0.42s;
+        cursor: none;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .ctg {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .ctc {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        background: var(--obsidian-3);
+        border: 1px solid rgba(212, 175, 55, 0.1);
+        overflow: hidden;
+      }
+
+      .ctim {
+        position: relative;
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #faf8f5;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        padding: 18px;
+      }
+
+      .ctim img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .product-card:hover {
+        transform: translateY(-12px);
+        border-color: var(--gold);
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.85),
+          0 0 0 1px rgba(212, 175, 55, 0.22);
+      }
+
+      .product-image-box {
+        position: relative;
+        width: 100%;
+        height: 260px;
+        overflow: hidden;
+        background: #faf8f5; /* Neutral ivory/cream light background */
+        border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        transition: background-color 0.4s;
+      }
+
+      .product-card:hover .product-image-box {
+        background: #ffffff; /* Slight brightness increase on hover */
+      }
+
+      .product-image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Prevent cropping, scale neatly */
+        display: block;
+        transition:
+          transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.55s;
+        filter: brightness(0.96) saturate(1.02);
+      }
+
+      .product-card:hover .product-image-box img {
+        transform: scale(1.06); /* Interactivity zoom */
+        filter: brightness(1) saturate(1.08);
+      }
+
+      .product-info {
+        padding: 24px 24px 28px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .product-label {
+        font-size: 8px;
+        letter-spacing: 0.55em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 8px;
+      }
+
+      .product-title {
+        font-family: "Playfair Display", serif;
+        font-size: 23px;
+        font-weight: 700;
+        color: var(--ivory);
+        margin-bottom: 4px;
+      }
+
+      .product-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 13px;
+        color: var(--gold);
+        letter-spacing: 0.1em;
+        margin-bottom: 14px;
+      }
+
+      .product-desc {
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        line-height: 1.95;
+        margin-bottom: 18px;
+      }
+
+      .product-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: auto; /* Push to bottom of card content */
+      }
+
+      .product-price {
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        color: var(--gold-l);
+      }
+
+      .cbtn {
+        padding: 10px 22px;
+        font-size: 9px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        background: transparent;
+        border: 1px solid rgba(212, 175, 55, 0.32);
+        color: var(--ivory);
+        font-family: "Jost", sans-serif;
+        cursor: none;
+        position: relative;
+        overflow: hidden;
+        transition:
+          color 0.35s,
+          border-color 0.35s;
+      }
+
+      .cbtn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gold);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .cbtn:hover {
+        color: var(--obsidian);
+        border-color: var(--gold);
+      }
+
+      .cbtn:hover::before {
+        transform: scaleX(1);
+      }
+
+      .cbtn span {
+        position: relative;
+        z-index: 1;
+      }
+
+      .ftags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .tag {
+        font-size: 9px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid rgba(212, 175, 55, 0.18);
+        padding: 4px 11px;
+      }
+
+      /* GALLERY */
+      .gal {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3px;
+        margin-top: 12px;
+      }
+      .gal-item {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 3/4;
+        cursor: none;
+      }
+      .gal-item.wide {
+        grid-column: span 2;
+        aspect-ratio: 16/9;
+      }
+      .gal-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.72) saturate(0.9);
+        transition:
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.5s;
+      }
+      .gal-item:hover img {
+        transform: scale(1.08);
+        filter: brightness(0.9) saturate(1.1);
+      }
+      .gal-item::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 1px solid transparent;
+        transition: border-color 0.4s;
+        pointer-events: none;
+        z-index: 3;
+      }
+      .gal-item:hover::after {
+        border-color: var(--gold);
+      }
+      .gal-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 18px 16px;
+        background: linear-gradient(
+          to top,
+          rgba(10, 10, 12, 0.95) 0%,
+          transparent 100%
+        );
+        z-index: 2;
+      }
+      .gal-name {
+        font-family: "Playfair Display", serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ivory);
+        margin-bottom: 3px;
+      }
+      .gal-price {
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        color: var(--gold-l);
+      }
+
+      .stmt {
+        position: relative;
+        z-index: 2;
+        padding: 140px 60px;
+        text-align: center;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 50%,
+          rgba(212, 175, 55, 0.048) 0%,
+          transparent 70%
+        );
+      }
+      .stq {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(26px, 4vw, 50px);
+        font-style: italic;
+        color: var(--ivory);
+        line-height: 1.42;
+        max-width: 900px;
+        margin: 0 auto 38px;
+      }
+      .stq strong {
+        color: var(--gold);
+        font-weight: 700;
+        font-style: normal;
+      }
+      .sta {
+        font-size: 9px;
+        letter-spacing: 0.52em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      footer {
+        position: relative;
+        z-index: 2;
+        padding: 58px 60px;
+        border-top: 1px solid rgba(212, 175, 55, 0.1);
+        background: rgba(212, 175, 55, 0.012);
+      }
+      .fi2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .flo {
+        font-family: "Playfair Display", serif;
+        font-size: 27px;
+        font-weight: 900;
+        letter-spacing: 0.3em;
+        color: var(--gold);
+      }
+      .ftg {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .fls {
+        display: flex;
+        gap: 40px;
+      }
+      .fls a {
+        font-size: 9px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .fls a:hover {
+        color: var(--gold);
+      }
+      .fcp {
+        font-size: 9px;
+        letter-spacing: 0.14em;
+        color: rgba(248, 244, 236, 0.16);
+      }
+
+      .rv {
+        opacity: 0;
+        transform: translateY(42px);
+        transition:
+          opacity 0.92s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.92s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .rv.on {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .d1 {
+        transition-delay: 0.1s;
+      }
+      .d2 {
+        transition-delay: 0.22s;
+      }
+      .d3 {
+        transition-delay: 0.34s;
+      }
+      .d4 {
+        transition-delay: 0.44s;
+      }
+
+      /* ORDER MODAL */
+      .om-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 10, 12, 0.88);
+        backdrop-filter: blur(8px);
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      .om-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .om-box {
+        position: relative;
+        background: var(--obsidian-2);
+        border: 1px solid rgba(212, 175, 55, 0.22);
+        padding: 48px;
+        max-width: 520px;
+        width: 90%;
+        max-height: 85vh;
+        overflow-y: auto;
+        box-shadow: 0 50px 150px rgba(0, 0, 0, 0.95);
+        animation: slideUp 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .om-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: transparent;
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        color: var(--gold);
+        cursor: none;
+        font-size: 18px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          border-color 0.3s,
+          color 0.3s;
+      }
+      .om-close:hover {
+        border-color: var(--gold);
+        color: var(--ivory);
+      }
+      .om-title {
+        font-size: 10px;
+        letter-spacing: 0.5em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .om-title::before {
+        content: "";
+        width: 24px;
+        height: 1px;
+        background: var(--gold);
+      }
+      .om-section {
+        margin-bottom: 32px;
+      }
+      .om-section-label {
+        font-size: 8px;
+        letter-spacing: 0.6em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 14px;
+        font-weight: 500;
+      }
+      .om-order-summary {
+        background: rgba(212, 175, 55, 0.08);
+        border: 1px solid rgba(212, 175, 55, 0.14);
+        padding: 20px;
+        border-radius: 2px;
+      }
+      .om-product-name {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--ivory);
+        margin-bottom: 8px;
+      }
+      .om-product-price {
+        font-size: 18px;
+        color: var(--gold-l);
+        letter-spacing: 0.08em;
+      }
+      .om-payment-card {
+        background: linear-gradient(
+          135deg,
+          rgba(15, 14, 24, 0.8) 0%,
+          rgba(25, 23, 38, 0.8) 100%
+        );
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        padding: 28px;
+        border-radius: 4px;
+        backdrop-filter: blur(8px);
+      }
+      .om-payment-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+      }
+      .om-payment-row:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      .om-payment-label {
+        font-size: 8px;
+        letter-spacing: 0.5em;
+        text-transform: uppercase;
+        color: var(--muted);
+        flex: 0 0 35%;
+      }
+      .om-payment-value {
+        font-size: 13px;
+        color: var(--ivory);
+        flex: 1;
+        text-align: right;
+        font-weight: 500;
+      }
+      .om-payment-row.account-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .om-payment-row.account-row .om-payment-value {
+        flex: 0 1 auto;
+      }
+      .om-copy-btn {
+        background: transparent;
+        border: 1px solid rgba(212, 175, 55, 0.32);
+        color: var(--gold);
+        font-size: 8px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        padding: 8px 16px;
+        cursor: none;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .om-copy-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gold);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s;
+      }
+      .om-copy-btn:hover {
+        border-color: var(--gold);
+        color: var(--obsidian);
+      }
+      .om-copy-btn:hover::before {
+        transform: scaleX(1);
+      }
+      .om-copy-btn span {
+        position: relative;
+        z-index: 1;
+      }
+      .om-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--gold);
+        color: var(--obsidian);
+        padding: 12px 24px;
+        border-radius: 2px;
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        font-weight: 500;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        z-index: 600;
+      }
+      .om-toast.show {
+        opacity: 1;
+      }
+      .om-note {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.65;
+        margin-bottom: 28px;
+        padding: 16px 0;
+        border-top: 1px solid rgba(212, 175, 55, 0.12);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+      }
+      .om-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .om-btn {
+        flex: 1;
+        min-width: 160px;
+        padding: 14px 24px;
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        background: transparent;
+        color: var(--ivory);
+        font-family: "Jost", sans-serif;
+        cursor: none;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .om-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gold);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .om-btn:hover {
+        color: var(--obsidian);
+        border-color: var(--gold);
+      }
+      .om-btn:hover::before {
+        transform: scaleX(1);
+      }
+      .om-btn span {
+        position: relative;
+        z-index: 1;
+      }
+      .om-btn.primary {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .om-secondary-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(212, 175, 55, 0.12);
+      }
+      .om-call-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--gold);
+        text-decoration: none;
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        transition: color 0.3s;
+      }
+      .om-call-link:hover {
+        color: var(--gold-l);
+      }
+      .om-call-icon {
+        font-size: 14px;
+      }
+
+      @media (min-width: 768px) {
+        .product-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .ctg {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1100px) {
+        .product-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        nav {
+          padding: 18px 22px;
+        }
+        .nm {
+          display: none;
+        }
+        .sec {
+          padding: 78px 22px;
+        }
+        .sh {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 18px;
+        }
+        .sd {
+          text-align: left;
+          max-width: 100%;
+        }
+        .product-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+        .ctg {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+        .gal {
+          grid-template-columns: 1fr 1fr;
+        }
+        .gal-item.wide {
+          grid-column: span 2;
+          aspect-ratio: 4/3;
+        }
+        .fi2 {
+          flex-direction: column;
+          gap: 30px;
+          text-align: center;
+        }
+        .fls {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 22px;
+        }
+      }
+      @media (max-width: 600px) {
+        .product-grid,
+        .ctg {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cur">
+      <div class="cur-d" id="cd"></div>
+      <div class="cur-r" id="cr"></div>
+    </div>
+    <canvas id="gc"></canvas>
+
+    <nav id="nav">
+      <a href="#" class="nl">Emperor</a>
+      <ul class="nm">
+        <li><a href="#frag">Fragrance</a></li>
+        <li><a href="#skin">Skincare</a></li>
+        <li><a href="#cout">Couture</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+      </ul>
+      <button class="nc">Book Private Viewing</button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hbg"></div>
+      <div class="slines">
+        <div class="sl"></div>
+        <div class="sl"></div>
+        <div class="sl"></div>
+        <div class="sl"></div>
+        <div class="sl"></div>
+      </div>
+      <div class="hc">
+        <p class="hey">Lagos · Est. MMXXIV · Couture Maison</p>
+        <h1 class="hh">Define<br /><em>Your Legacy.</em></h1>
+        <p class="hs">For those who were born to reign.</p>
+        <div class="hdv"></div>
+        <a href="#frag" class="hbtn"><span>Explore the Collections</span></a>
+      </div>
+      <div class="sci">
+        <span>Scroll</span>
+        <div class="scl"></div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="mq">
+      <div class="mqt">
+        <div class="mqi">Fragrance Atelier <span class="mqd"></span></div>
+        <div class="mqi">Skincare Vault <span class="mqd"></span></div>
+        <div class="mqi">Couture Gallery <span class="mqd"></span></div>
+        <div class="mqi">Private Viewing <span class="mqd"></span></div>
+        <div class="mqi">Lagos Luxury <span class="mqd"></span></div>
+        <div class="mqi">Emperor Collection <span class="mqd"></span></div>
+        <div class="mqi">Fragrance Atelier <span class="mqd"></span></div>
+        <div class="mqi">Skincare Vault <span class="mqd"></span></div>
+        <div class="mqi">Couture Gallery <span class="mqd"></span></div>
+        <div class="mqi">Private Viewing <span class="mqd"></span></div>
+        <div class="mqi">Lagos Luxury <span class="mqd"></span></div>
+        <div class="mqi">Emperor Collection <span class="mqd"></span></div>
+      </div>
+    </div>
+
+    <!-- ═══ FRAGRANCE ═══ -->
+    <section class="sec" id="frag">
+      <div class="sh rv">
+        <div>
+          <p class="slb">Collection I</p>
+          <h2 class="st">The Fragrance<br /><em>Atelier</em></h2>
+        </div>
+        <div>
+          <p class="sd">
+            Crystal vessels containing olfactory masterpieces — each drop a
+            journey through desire, memory, and prestige.
+          </p>
+          <br /><a href="#" class="va">View All Fragrances →</a>
+        </div>
+      </div>
+      <div class="product-grid fg">
+        <div class="fc rv d1">
+          <div class="fi">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Oba Fragrance"
+            />
+            <div class="fio"></div>
+            <span class="fn">01</span>
+          </div>
+          <div class="fb">
+            <p class="fname">Ọba Noir</p>
+            <p class="fsub">L'Essence du Roi</p>
+            <div class="ftags">
+              <span class="tag">Oud</span><span class="tag">Amber</span
+              ><span class="tag">Vetiver</span>
+            </div>
+            <div class="fft">
+              <span class="fp">₦185,000</span
+              ><button
+                class="cbtn"
+                onclick="openOrderModal('Ọba Noir', '₦185,000')"
+              >
+                <span>Place Order</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fc rv d2">
+          <div class="fi">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Imagination Fragrance"
+            />
+            <div class="fio"></div>
+            <span class="fn">02</span>
+          </div>
+          <div class="fb">
+            <p class="fname">Imagination</p>
+            <p class="fsub">L'Air Céleste</p>
+            <div class="ftags">
+              <span class="tag">Neroli</span><span class="tag">Aqua</span
+              ><span class="tag">White Musk</span>
+            </div>
+            <div class="fft">
+              <span class="fp">₦165,000</span
+              ><button
+                class="cbtn"
+                onclick="openOrderModal('Imagination', '₦165,000')"
+              >
+                <span>Place Order</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fc rv d3">
+          <div class="fi">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Sovereign Rain Fragrance"
+            />
+            <div class="fio"></div>
+            <span class="fn">03</span>
+          </div>
+          <div class="fb">
+            <p class="fname">Sovereign Rain</p>
+            <p class="fsub">L'Orage Doré</p>
+            <div class="ftags">
+              <span class="tag">Petrichor</span
+              ><span class="tag">Sandalwood</span><span class="tag">Sea</span>
+            </div>
+            <div class="fft">
+              <span class="fp">₦155,000</span
+              ><button
+                class="cbtn"
+                onclick="openOrderModal('Sovereign Rain', '₦155,000')"
+              >
+                <span>Place Order</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perfume 4 as featured full-width banner -->
+      <div
+        style="
+          margin-top: 24px;
+          position: relative;
+          height: 380px;
+          overflow: hidden;
+          border: 1px solid rgba(212, 175, 55, 0.15);
+          cursor: none;
+        "
+        class="rv"
+      >
+        <img
+          src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+          alt="Seduction Royale"
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.7) saturate(1.1);
+          "
+        />
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+              to right,
+              rgba(10, 10, 12, 0.95) 0%,
+              rgba(10, 10, 12, 0.4) 55%,
+              transparent 100%
+            );
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            transform: translateY(-50%);
+          "
+        >
+          <p
+            style="
+              font-size: 9px;
+              letter-spacing: 0.6em;
+              text-transform: uppercase;
+              color: var(--gold);
+              margin-bottom: 14px;
+            "
+          >
+            Featured · Limited Edition
+          </p>
+          <p
+            style="
+              font-family: &quot;Playfair Display&quot;, serif;
+              font-size: clamp(32px, 5vw, 58px);
+              font-weight: 700;
+              color: var(--ivory);
+              line-height: 1;
+            "
+          >
+            Séduction<br /><em style="color: var(--gold)">Royale</em>
+          </p>
+          <p
+            style="
+              font-family: &quot;Cormorant Garamond&quot;, serif;
+              font-style: italic;
+              font-size: 15px;
+              color: var(--muted);
+              margin-top: 12px;
+              margin-bottom: 24px;
+            "
+          >
+            Saffron · Cinnamon · Vanilla · Oud — Only 50 bottles worldwide
+          </p>
+          <button
+            class="cbtn"
+            onclick="openOrderModal('Séduction Royale', '₦420,000')"
+          >
+            <span>Reserve Your Bottle — ₦420,000</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SKINCARE ═══ -->
+    <section class="sec sksec" id="skin">
+      <div class="sh rv">
+        <div>
+          <p class="slb">Collection II</p>
+          <h2 class="st">The Skincare<br /><em>Vault</em></h2>
+        </div>
+        <div>
+          <p class="sd">
+            Where science becomes ritual. Rare botanicals and precious minerals
+            for skin that radiates absolute authority.
+          </p>
+          <br /><a href="#" class="va">View All Treatments →</a>
+        </div>
+      </div>
+
+      <!-- Hero Banner -->
+      <div
+        style="
+          position: relative;
+          height: 420px;
+          overflow: hidden;
+          border: 1px solid rgba(212, 175, 55, 0.15);
+          margin-bottom: 3px;
+          cursor: none;
+        "
+        class="rv"
+      >
+        <img
+          src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+          alt="Skincare Campaign"
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 30%;
+            filter: brightness(0.62) saturate(0.9);
+            transition: transform 0.8s;
+          "
+        />
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+              to right,
+              rgba(10, 10, 12, 0.95) 0%,
+              rgba(10, 10, 12, 0.45) 55%,
+              transparent 100%
+            );
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            transform: translateY(-50%);
+          "
+        >
+          <p
+            style="
+              font-size: 9px;
+              letter-spacing: 0.65em;
+              text-transform: uppercase;
+              color: var(--gold);
+              margin-bottom: 14px;
+            "
+          >
+            The Vault · Premium Skincare
+          </p>
+          <p
+            style="
+              font-family: &quot;Playfair Display&quot;, serif;
+              font-size: clamp(30px, 5vw, 56px);
+              font-weight: 700;
+              color: var(--ivory);
+              line-height: 1.05;
+            "
+          >
+            Skin That<br /><em style="color: var(--gold); font-style: italic"
+              >Commands Rooms.</em
+            >
+          </p>
+          <p
+            style="
+              font-family: &quot;Cormorant Garamond&quot;, serif;
+              font-style: italic;
+              font-size: 15px;
+              color: var(--muted);
+              margin-top: 14px;
+              max-width: 400px;
+            "
+          >
+            Dermatologist-formulated rituals for those who understand that great
+            skin is the ultimate luxury.
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Grid: large hero left + 2 right -->
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1.5fr 1fr 1fr;
+          gap: 3px;
+          margin-bottom: 3px;
+        "
+      >
+        <!-- Hero large card -->
+        <div class="skc" style="grid-row: span 2; min-height: 620px">
+          <div class="skim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Wonder Cream"
+            />
+          </div>
+          <div class="sko"></div>
+          <div class="skct">
+            <p class="sklb">Hero Treatment · Best Seller</p>
+            <p class="skn" style="font-size: 28px">Wonder Cream</p>
+            <p class="skt">Instant Glow Reviver · 50ml</p>
+            <p class="skm">
+              Gold lid · Vegan · Dermatologically tested<br />For a smoother,
+              rejuvenated complexion
+            </p>
+            <p class="skp">₦78,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Wonder Cream', '₦78,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="skc" style="min-height: 305px">
+          <div class="skim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="CeraVe Moisturising Cream"
+              style="object-position: center"
+            />
+          </div>
+          <div class="sko"></div>
+          <div class="skct">
+            <p class="sklb">Deep Moisture</p>
+            <p class="skn">CeraVe Cream</p>
+            <p class="skt">Moisturising Cream · 454g</p>
+            <p class="skm">
+              3 essential ceramides · Hyaluronic acid<br />Fragrance free · For
+              very dry skin
+            </p>
+            <p class="skp">₦52,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('CeraVe Cream', '₦52,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="skc" style="min-height: 305px">
+          <div class="skim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Gatineau Hydra Aura"
+              style="object-position: center"
+            />
+          </div>
+          <div class="sko"></div>
+          <div class="skct">
+            <p class="sklb">Hydration Ritual</p>
+            <p class="skn">Hydra Aura Mask</p>
+            <p class="skt">Moisturising Cream Mask · 200ml</p>
+            <p class="skm">
+              Gatineau Paris · Hydrating complex<br />Hyaluronic acid · Instant
+              plumping
+            </p>
+            <p class="skp">₦95,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Hydra Aura Mask', '₦95,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="skc" style="min-height: 305px">
+          <div class="skim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="La Roche-Posay Cicaplast"
+              style="object-position: center top"
+            />
+          </div>
+          <div class="sko"></div>
+          <div class="skct">
+            <p class="sklb">Repair & Soothe</p>
+            <p class="skn">Cicaplast Baume</p>
+            <p class="skt">Soothing Therapeutic Balm · B5+</p>
+            <p class="skm">
+              La Roche-Posay · Tribioma Innovation<br />Multi-purpose skin
+              protector
+            </p>
+            <p class="skp">₦68,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Cicaplast Baume', '₦68,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="skc" style="min-height: 305px">
+          <div class="skim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Collagen Snail Cream"
+              style="object-position: center"
+            />
+          </div>
+          <div class="sko"></div>
+          <div class="skct">
+            <p class="sklb">Anti-Ageing</p>
+            <p class="skn">Collagen Snail Cream</p>
+            <p class="skt">Deep Cleansing Whitening · 80g</p>
+            <p class="skm">
+              Anti-acne · Brightening · Whitening<br />Anti-ageing · All skin
+              types
+            </p>
+            <p class="skp">₦38,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Collagen Snail Cream', '₦38,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom full-width product shot -->
+      <div
+        style="
+          position: relative;
+          height: 320px;
+          overflow: hidden;
+          border: 1px solid rgba(212, 175, 55, 0.12);
+          cursor: none;
+        "
+        class="rv"
+      >
+        <img
+          src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+          alt="CeraVe Collection"
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.65) saturate(0.85);
+            transition: transform 0.8s;
+          "
+        />
+        <div
+          style="
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+              to left,
+              rgba(10, 10, 12, 0.96) 0%,
+              rgba(10, 10, 12, 0.4) 55%,
+              transparent 100%
+            );
+          "
+        ></div>
+        <div
+          style="
+            position: absolute;
+            top: 50%;
+            right: 60px;
+            transform: translateY(-50%);
+            text-align: right;
+          "
+        >
+          <p
+            style="
+              font-size: 9px;
+              letter-spacing: 0.6em;
+              text-transform: uppercase;
+              color: var(--gold);
+              margin-bottom: 12px;
+            "
+          >
+            Complete Collection
+          </p>
+          <p
+            style="
+              font-family: &quot;Playfair Display&quot;, serif;
+              font-size: clamp(24px, 4vw, 46px);
+              font-weight: 700;
+              color: var(--ivory);
+              line-height: 1.05;
+            "
+          >
+            CeraVe<br /><em style="color: var(--gold); font-style: italic"
+              >Daily Essentials</em
+            >
+          </p>
+          <p
+            style="
+              font-family: &quot;Cormorant Garamond&quot;, serif;
+              font-style: italic;
+              font-size: 14px;
+              color: var(--muted);
+              margin-top: 12px;
+              margin-bottom: 22px;
+            "
+          >
+            Moisturising Lotion + Cream Set<br />3 essential ceramides ·
+            Hyaluronic acid
+          </p>
+          <button
+            class="cbtn"
+            onclick="openOrderModal('CeraVe Daily Essentials Set', '₦85,000')"
+          >
+            <span>Shop the Set — ₦85,000</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ COUTURE ═══ -->
+    <section class="sec" id="cout">
+      <div class="sh rv">
+        <div>
+          <p class="slb">Collection III</p>
+          <h2 class="st">The Couture<br /><em>Gallery</em></h2>
+        </div>
+        <div>
+          <p class="sd">
+            Tailored in Lagos, admired worldwide. Each piece a manifesto of
+            modern African aristocracy — bespoke, eternal.
+          </p>
+          <br /><a href="#" class="va">Book a Fitting →</a>
+        </div>
+      </div>
+
+      <!-- SUITS ROW -->
+      <p
+        style="
+          font-size: 9px;
+          letter-spacing: 0.55em;
+          text-transform: uppercase;
+          color: var(--gold);
+          margin-bottom: 20px;
+        "
+      >
+        — Suits &amp; Tailoring
+      </p>
+      <div class="ctg rv">
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Agbada Noir"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Bespoke Tailoring</p>
+            <h3 class="ctn">The Emperor Suit</h3>
+            <p class="ctd">
+              Double-breasted · Gold chain detail<br />Italian wool · Lagos
+              crafted
+            </p>
+            <p class="ctp">From ₦1,200,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('The Emperor Suit', 'From ₦1,200,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="White Tuxedo"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Formal Collection</p>
+            <h3 class="ctn">The White Sovereign</h3>
+            <p class="ctd">
+              Three-piece tuxedo · Shawl lapel<br />Black contrast buttons ·
+              Waistcoat
+            </p>
+            <p class="ctp">From ₦980,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('The White Sovereign', 'From ₦980,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Grey Suit"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Ready-to-Wear</p>
+            <h3 class="ctn">The Lagos Classic</h3>
+            <p class="ctd">
+              Three-piece slate grey · Peak lapel<br />Cashmere blend ·
+              Structured silhouette
+            </p>
+            <p class="ctp">From ₦850,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('The Lagos Classic', 'From ₦850,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLOTHES ROW -->
+      <p
+        style="
+          font-size: 9px;
+          letter-spacing: 0.55em;
+          text-transform: uppercase;
+          color: var(--gold);
+          margin-top: 48px;
+          margin-bottom: 20px;
+        "
+      >
+        — Streetwear &amp; Casual
+      </p>
+      <div class="ctg rv">
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Emperor Tee"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Streetwear</p>
+            <h3 class="ctn">Emperor Oversized Tee</h3>
+            <p class="ctd">
+              400gsm cotton · Gold print<br />Dropped shoulder · Unisex
+            </p>
+            <p class="ctp">₦45,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Emperor Oversized Tee', '₦45,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Graphic Tee"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Graphic Series</p>
+            <h3 class="ctn">Wings of Royalty Tee</h3>
+            <p class="ctd">
+              Heavyweight cotton · Screen print<br />Army green · Limited run
+            </p>
+            <p class="ctp">₦52,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Wings of Royalty Tee', '₦52,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Art Tee"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Art Series</p>
+            <h3 class="ctn">Hustle Culture Tee</h3>
+            <p class="ctd">
+              Vintage wash · Hand artwork<br />Oversized · Statement piece
+            </p>
+            <p class="ctp">₦68,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Hustle Culture Tee', '₦68,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctg rv" style="margin-top: 20px">
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Flannel Shirt"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Smart Casual</p>
+            <h3 class="ctn">Emperor Flannel Shirt</h3>
+            <p class="ctd">
+              Brushed cotton · Relaxed fit<br />Oversized · Plaid weave
+            </p>
+            <p class="ctp">₦78,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Emperor Flannel Shirt', '₦78,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Emperor Hoodie"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Premium Hoodies</p>
+            <h3 class="ctn">Emperor Signature Hoodie</h3>
+            <p class="ctd">
+              500gsm fleece · Bold graphic<br />Oversized fit · Unisex
+            </p>
+            <p class="ctp">₦95,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Emperor Signature Hoodie', '₦95,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+        <div class="ctc">
+          <div class="ctim">
+            <img
+              src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+              alt="Emperor Polo"
+            />
+            <div class="cto"></div>
+          </div>
+          <div class="ctct">
+            <p class="ctlb">Polo Collection</p>
+            <h3 class="ctn">Emperor Monogram Polo</h3>
+            <p class="ctd">
+              Pique cotton · Diamond pattern<br />5 colourways · Made in Lagos
+            </p>
+            <p class="ctp">₦62,000</p>
+            <button
+              class="cbtn"
+              onclick="openOrderModal('Emperor Monogram Polo', '₦62,000')"
+              style="margin-top: 12px; width: 100%"
+            >
+              <span>Place Order</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ GALLERY ═══ -->
+    <section class="sec" id="gallery">
+      <div class="sh rv">
+        <div>
+          <p class="slb">The Gallery</p>
+          <h2 class="st">Emperor<br /><em>Lookbook</em></h2>
+        </div>
+        <div>
+          <p class="sd">
+            Every piece tells a story. Every stitch, a legacy. Explore the full
+            Emperor world.
+          </p>
+          <br /><a href="#" class="va">View Full Lookbook →</a>
+        </div>
+      </div>
+      <div class="gal rv">
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Emperor suit lookbook"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Emperor Suit</p>
+            <p class="gal-price">From ₦1,200,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Oba Noir perfume"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Ọba Noir</p>
+            <p class="gal-price">₦185,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Emperor hoodie"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Signature Hoodie</p>
+            <p class="gal-price">₦95,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Seduction Royale perfume"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Séduction Royale</p>
+            <p class="gal-price">₦420,000</p>
+          </div>
+        </div>
+        <div class="gal-item wide">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="White Sovereign tuxedo"
+            style="object-position: center 20%"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">The White Sovereign</p>
+            <p class="gal-price">From ₦980,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Monogram polo"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Monogram Polo</p>
+            <p class="gal-price">₦62,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Sovereign Rain"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Sovereign Rain</p>
+            <p class="gal-price">₦155,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Hustle tee"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">Hustle Culture Tee</p>
+            <p class="gal-price">₦68,000</p>
+          </div>
+        </div>
+        <div class="gal-item">
+          <img
+            src="data:image/jpeg;base64,[BASE64_PLACEHOLDER]"
+            alt="Lagos Classic suit"
+          />
+          <div class="gal-overlay">
+            <p class="gal-name">The Lagos Classic</p>
+            <p class="gal-price">₦850,000</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRAND STATEMENT -->
+    <section class="stmt">
+      <div class="hdv" style="margin-bottom: 60px"></div>
+      <p class="stq rv">
+        "True luxury is not purchased.<br />It is
+        <strong>inherited through vision</strong> — and chosen by those<br />who
+        understand the weight of excellence."
+      </p>
+      <p class="sta rv d1">— The Emperor Philosophy, Lagos</p>
+      <div class="hdv" style="margin-top: 60px"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="fi2">
+        <div>
+          <p class="flo">EMPEROR</p>
+          <p class="ftg">Luxury Maison · Lagos, Nigeria</p>
+        </div>
+        <div class="fls">
+          <a href="#">Collections</a><a href="#">Atelier</a>
+          <a href="#">Bespoke</a><a href="#">Flagship</a><a href="#">Contact</a>
+        </div>
+        <p class="fcp">© MMXXVI Emperor Lagos. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      const cd = document.getElementById("cd"),
+        cr = document.getElementById("cr");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+      });
+      (function loop() {
+        rx += (mx - rx) * 0.14;
+        ry += (my - ry) * 0.14;
+        cd.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+        cr.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+        requestAnimationFrame(loop);
+      })();
+
+      const cv = document.getElementById("gc"),
+        cx = cv.getContext("2d");
+      let W, H;
+      function rsz() {
+        W = cv.width = innerWidth;
+        H = cv.height = innerHeight;
+      }
+      rsz();
+      addEventListener("resize", rsz);
+      class B {
+        constructor() {
+          this.r();
+        }
+        r() {
+          this.x = Math.random() * W;
+          this.y = Math.random() * H;
+          this.rad = 110 + Math.random() * 230;
+          this.vx = (Math.random() - 0.5) * 0.32;
+          this.vy = (Math.random() - 0.5) * 0.32;
+          this.a = 0.022 + Math.random() * 0.052;
+          this.h = 39 + Math.random() * 14;
+          this.ph = Math.random() * Math.PI * 2;
+          this.sp = 0.0018 + Math.random() * 0.0028;
+        }
+        step() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.ph += this.sp;
+          if (
+            this.x < -this.rad ||
+            this.x > W + this.rad ||
+            this.y < -this.rad ||
+            this.y > H + this.rad
+          )
+            this.r();
+        }
+        draw() {
+          const p = 1 + Math.sin(this.ph) * 0.14,
+            g = cx.createRadialGradient(
+              this.x,
+              this.y,
+              0,
+              this.x,
+              this.y,
+              this.rad * p,
+            );
+          g.addColorStop(0, `hsla(${this.h},78%,52%,${this.a})`);
+          g.addColorStop(0.5, `hsla(${this.h},64%,36%,${this.a * 0.38})`);
+          g.addColorStop(1, `hsla(${this.h},60%,28%,0)`);
+          cx.beginPath();
+          cx.arc(this.x, this.y, this.rad * p, 0, Math.PI * 2);
+          cx.fillStyle = g;
+          cx.fill();
+        }
+      }
+      const bs = Array.from({ length: 10 }, () => new B());
+      (function draw() {
+        cx.clearRect(0, 0, W, H);
+        bs.forEach((b) => {
+          b.step();
+          b.draw();
+        });
+        requestAnimationFrame(draw);
+      })();
+
+      const obs = new IntersectionObserver(
+        (es) => {
+          es.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("on");
+          });
+        },
+        { threshold: 0.06 },
+      );
+      document.querySelectorAll(".rv").forEach((el) => obs.observe(el));
+
+      const nav = document.getElementById("nav");
+      addEventListener("scroll", () => {
+        if (scrollY > 70) {
+          nav.style.cssText =
+            "background:rgba(10,10,12,.97);backdrop-filter:blur(22px);border-bottom:1px solid rgba(212,175,55,.08)";
+        } else {
+          nav.style.cssText =
+            "background:linear-gradient(to bottom,rgba(10,10,12,.92) 0%,transparent 100%);backdrop-filter:blur(2px)";
+        }
+      });
+
+      /* ORDER MODAL COMPONENT */
+      class OrderModal {
+        constructor() {
+          this.backdrop = null;
+          this.modal = null;
+          this.init();
+        }
+
+        init() {
+          // Create backdrop
+          this.backdrop = document.createElement("div");
+          this.backdrop.className = "om-backdrop";
+          this.backdrop.id = "orderModalBackdrop";
+          this.backdrop.innerHTML = this.getModalHTML();
+          document.body.appendChild(this.backdrop);
+
+          // Get modal box
+          this.modal = this.backdrop.querySelector(".om-box");
+
+          // Event listeners
+          this.backdrop.addEventListener("click", (e) => {
+            if (e.target === this.backdrop) this.close();
+          });
+
+          this.modal
+            .querySelector(".om-close")
+            .addEventListener("click", () => this.close());
+
+          this.modal
+            .querySelector(".om-copy-btn")
+            .addEventListener("click", () => this.copyAccountNumber());
+
+          this.modal
+            .querySelector(".om-cancel-btn")
+            .addEventListener("click", () => this.close());
+        }
+
+        getModalHTML() {
+          return `
+            <div class="om-box">
+              <button class="om-close">✕</button>
+              <div class="om-title">Place Your Order</div>
+
+              <!-- ORDER SUMMARY -->
+              <div class="om-section">
+                <div class="om-section-label">📦 Order Summary</div>
+                <div class="om-order-summary">
+                  <p class="om-product-name" id="omProductName">Product</p>
+                  <p class="om-product-price" id="omProductPrice">₦0</p>
+                </div>
+              </div>
+
+              <!-- PAYMENT DETAILS -->
+              <div class="om-section">
+                <div class="om-section-label">💳 Payment Details</div>
+                <div class="om-payment-card">
+                  <div class="om-payment-row">
+                    <div class="om-payment-label">Bank</div>
+                    <div class="om-payment-value">OPay</div>
+                  </div>
+                  <div class="om-payment-row">
+                    <div class="om-payment-label">Account Name</div>
+                    <div class="om-payment-value">Cletus Austine Idu</div>
+                  </div>
+                  <div class="om-payment-row account-row">
+                    <div class="om-payment-label">Account Number</div>
+                    <div class="om-payment-value" id="omAccountNumber">
+                      7041793529
+                    </div>
+                    <button class="om-copy-btn">
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NOTE -->
+              <p class="om-note">
+                After payment, tap below to confirm your order on WhatsApp.
+              </p>
+
+              <!-- ACTIONS -->
+              <div class="om-actions">
+                <button class="om-btn primary" id="omWhatsAppBtn">
+                  <span>Confirm on WhatsApp</span>
+                </button>
+                <button class="om-btn om-cancel-btn">
+                  <span>Cancel</span>
+                </button>
+              </div>
+
+              <!-- SECONDARY ACTIONS -->
+              <div class="om-secondary-actions">
+                <a href="tel:+2347041793529" class="om-call-link">
+                  <span class="om-call-icon">☎️</span>
+                  <span>Call to Order</span>
+                </a>
+              </div>
+            </div>
+          `;
+        }
+
+        open(productName, productPrice) {
+          document.getElementById("omProductName").textContent = productName;
+          document.getElementById("omProductPrice").textContent = productPrice;
+
+          // Set WhatsApp button
+          const whatsappBtn = document.getElementById("omWhatsAppBtn");
+          const encodedMessage = this.encodeWhatsAppMessage(
+            productName,
+            productPrice,
+          );
+          whatsappBtn.onclick = () => {
+            window.open(
+              `https://wa.me/2347041793529?text=${encodedMessage}`,
+              "_blank",
+            );
+            this.close();
+          };
+
+          this.backdrop.classList.add("show");
+        }
+
+        close() {
+          this.backdrop.classList.remove("show");
+        }
+
+        encodeWhatsAppMessage(productName, productPrice) {
+          const message = `Hello Emperor, I'd like to order: ${productName} - ${productPrice}. I have made payment to the OPay account. Please confirm.`;
+          return encodeURIComponent(message);
+        }
+
+        copyAccountNumber() {
+          const accountNumber = "7041793529";
+          navigator.clipboard.writeText(accountNumber).then(() => {
+            this.showToast("Copied!");
+          });
+        }
+
+        showToast(message) {
+          let toast = document.getElementById("omToast");
+          if (!toast) {
+            toast = document.createElement("div");
+            toast.id = "omToast";
+            toast.className = "om-toast";
+            document.body.appendChild(toast);
+          }
+          toast.textContent = message;
+          toast.classList.add("show");
+          setTimeout(() => {
+            toast.classList.remove("show");
+          }, 2000);
+        }
+      }
+
+      // Initialize modal once
+      let orderModal;
+      document.addEventListener("DOMContentLoaded", () => {
+        orderModal = new OrderModal();
+      });
+
+      // Helper function to open modal for a product
+      function openOrderModal(productName, productPrice) {
+        if (!orderModal) orderModal = new OrderModal();
+        orderModal.open(productName, productPrice);
+      }
+    </script>
+
+    <!-- Load base64 image data -->
+    <script src="images.js"></script>
+
+    <!-- Image Injection System -->
+    <script>
+      const productImageMap = {
+        "oba noir": "img_oba_noir",
+        "oba fragrance": "img_oba_noir",
+        imagination: "img_imagination",
+        "imagination fragrance": "img_imagination",
+        "sovereign rain": "img_sovereign_rain",
+        "sovereign rain fragrance": "img_sovereign_rain",
+        "seduction royale": "img_seduction_royale",
+        "seduction royale fragrance": "img_seduction_royale",
+        "wonder cream": "img_wonder_cream",
+        "cerave cream": "img_cerave_cream",
+        "cerave moisturising cream": "img_cerave_cream",
+        "hydra aura mask": "img_hydra_aura",
+        "gatineau hydra aura": "img_hydra_aura",
+        "cicaplast baume": "img_cicaplast",
+        "la roche posay cicaplast": "img_cicaplast",
+        "collagen snail cream": "img_collagen_snail",
+        "the emperor suit": "img_emperor_suit",
+        "emperor suit": "img_emperor_suit",
+        "agbada noir": "img_emperor_suit",
+        "the white sovereign": "img_white_sovereign",
+        "white sovereign": "img_white_sovereign",
+        "white tuxedo": "img_white_sovereign",
+        "the lagos classic": "img_lagos_classic",
+        "lagos classic": "img_lagos_classic",
+        "grey suit": "img_lagos_classic",
+        "emperor oversized tee": "img_oversized_tee",
+        "oversized tee": "img_oversized_tee",
+        "wings of royalty tee": "img_wings_royalty",
+        "graphic tee": "img_wings_royalty",
+        "hustle culture tee": "img_hustle_culture",
+        "art tee": "img_hustle_culture",
+        "emperor flannel shirt": "img_flannel_shirt",
+        "flannel shirt": "img_flannel_shirt",
+        "emperor signature hoodie": "img_signature_hoodie",
+        "emperor hoodie": "img_signature_hoodie",
+        "signature hoodie": "img_signature_hoodie",
+        "emperor monogram polo": "img_monogram_polo",
+        "emperor polo": "img_monogram_polo",
+        "monogram polo": "img_monogram_polo",
+        "skincare campaign": "img_skincare_campaign",
+        "cerave collection": "img_cerave_collection",
+        "emperor suit lookbook": "img_lookbook_1",
+        "oba noir perfume": "img_lookbook_2",
+        "emperor hoodie lookbook": "img_lookbook_3",
+        "seduction royale perfume": "img_lookbook_4",
+        "white sovereign tuxedo": "img_lookbook_5",
+        "monogram polo lookbook": "img_lookbook_6",
+        "sovereign rain": "img_lookbook_7",
+        "hustle tee": "img_lookbook_8",
+        "lagos classic suit": "img_lookbook_9",
+      };
+
+      function normalizeImageName(value) {
+        return String(value || "")
+          .toLowerCase()
+          .replace(/&amp;/g, "and")
+          .replace(/[^a-z0-9\s]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function injectImages() {
+        if (typeof EMPEROR_IMAGES === "undefined") {
+          console.warn("EMPEROR_IMAGES not yet loaded. Retrying in 50ms...");
+          setTimeout(injectImages, 50);
+          return;
+        }
+
+        let injectedCount = 0;
+        let missingCount = 0;
+        const missingImages = [];
+
+        document
+          .querySelectorAll('img[src*="[BASE64_PLACEHOLDER]"]')
+          .forEach((img, index) => {
+            const alt = img.getAttribute("alt") || "";
+            const normalizedAlt = normalizeImageName(alt);
+            const imageKey = productImageMap[normalizedAlt];
+
+            if (imageKey && EMPEROR_IMAGES[imageKey]) {
+              img.src = EMPEROR_IMAGES[imageKey];
+              img.classList.add("image-loaded");
+              injectedCount++;
+              return;
+            }
+
+            missingCount++;
+            missingImages.push({ index, alt, normalizedAlt });
+            console.warn(`⚠️ No image mapping found for: "${alt}"`);
+          });
+
+        console.log(
+          `✅ Image injection complete: ${injectedCount} images loaded.`,
+        );
+        if (missingCount > 0) {
+          console.warn(
+            `⚠️ ${missingCount} images are still missing from the mapping.`,
+          );
+          console.table(missingImages);
+        }
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", injectImages);
+      } else {
+        injectImages();
+      }
+    </script>
+  </body>
+</html>

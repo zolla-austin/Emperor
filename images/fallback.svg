@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">EMPEROR image unavailable</title>
+  <desc id="desc">A black and gold EMPEROR placeholder</desc>
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="60%">
+      <stop offset="0" stop-color="#302814"/>
+      <stop offset="1" stop-color="#0a0a0c"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#glow)"/>
+  <rect x="36" y="36" width="1128" height="1428" fill="none" stroke="#d4af37" stroke-opacity=".45" stroke-width="2"/>
+  <text x="600" y="710" fill="#d4af37" font-family="Georgia, serif" font-size="78" letter-spacing="20" text-anchor="middle">EMPEROR</text>
+  <text x="600" y="785" fill="#f8f4ec" fill-opacity=".55" font-family="Arial, sans-serif" font-size="22" letter-spacing="8" text-anchor="middle">LAGOS</text>
+</svg>
