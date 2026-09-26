@@ -61,12 +61,12 @@ function pageHead({
   description,
   prefix = "",
   urlPath = "",
-  image = "images/lookbook-the-emperor-suit.webp",
+  image: _image = "images/lookbook-the-emperor-suit.webp",
   ogType = "website",
 }) {
   const fullTitle = `${title} | EMPEROR — Lagos`;
   const canonicalUrl = new URL(urlPath, SITE_URL).href;
-  const socialImageUrl = new URL(image, SITE_URL).href;
+  const socialImageUrl = new URL("images/og-emperor.png", SITE_URL).href;
 
   return `  <head>
     <meta charset="UTF-8" />
@@ -74,11 +74,19 @@ function pageHead({
     <meta name="description" content="${escapeHtml(description)}" />
     <title>${escapeHtml(fullTitle)}</title>
     <link rel="canonical" href="${escapeHtml(canonicalUrl)}" />
+    <link rel="icon" href="${prefix}images/favicon.png" type="image/png" sizes="512x512" />
     <link rel="icon" href="${prefix}images/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="${prefix}images/apple-touch-icon.png" />
     <meta property="og:site_name" content="EMPEROR — Lagos" />
     <meta property="og:title" content="${escapeHtml(fullTitle)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${escapeHtml(socialImageUrl)}" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="EMPEROR logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="${escapeHtml(socialImageUrl)}" />
     <meta property="og:type" content="${escapeHtml(ogType)}" />
     <meta property="og:url" content="${escapeHtml(canonicalUrl)}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
